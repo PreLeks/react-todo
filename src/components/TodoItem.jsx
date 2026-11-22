@@ -1,17 +1,25 @@
-const TodoItem = () => {
+const TodoItem = (props) => {
+    const {
+        className = '',
+        id,
+        title,
+        isDone,
+    } = props
+
     return (
-        <li className="todo__item todo-item">
+        <li className = {`todo-item ${className}`}>
             <input
-                className="todo-item__checkbox"
-                id="task-1"
-                type="checkbox"
-                checked
+                className = "todo-item__checkbox"
+                id = {id}
+                type = "checkbox"
+                checked = {isDone}
+                readOnly
             />
             <label
-                className="todo-item__label"
-                htmlFor="task-1"
+                className = "todo-item__label"
+                htmlFor = {id}
             >
-                Task 1
+                {title}
             </label>
             <button
                 className="todo-item__delete-button"

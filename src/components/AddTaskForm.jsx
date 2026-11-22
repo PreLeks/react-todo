@@ -3,9 +3,16 @@ import Button from './Button.jsx'
 
 const AddTaskForm = () => {
     return (
-        <form className="todo__form">
-            <Field />
-            <Button />
+        <form className = "todo__form">
+            <Field
+                className = "todo__field"
+                id = "new-task"
+                label = "Новая задача"
+            />
+            <Button
+                type = "submit"
+                children = "Ввод"
+            />
         </form>
     )
 }
