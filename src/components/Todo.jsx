@@ -2,7 +2,7 @@ import AddTaskForm from './AddTaskForm.jsx'
 import SearchTaskForm from './SearchTaskForm.jsx'
 import TodoInfo from './TodoInfo.jsx'
 import TodoList from './TodoList.jsx'
-import {useState} from "react";
+import { useState, useEffect } from "react";
 
 const Todo = () => {
     const [tasks, setTasks] = useState([
@@ -54,6 +54,18 @@ const Todo = () => {
             setNewTaskTitle('')
         }
     }
+
+    useEffect(() => {
+        const savedTasks = localStorage.getItem('tasks')
+
+        if (savedTasks) {
+            setTasks(JSON.parse(savedTasks))
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+    }, [tasks])
 
     return (
         <div className = "todo">
