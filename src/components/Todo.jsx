@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import AddTaskForm from './AddTaskForm.jsx'
 import SearchTaskForm from './SearchTaskForm.jsx'
 import TodoInfo from './TodoInfo.jsx'
@@ -18,7 +18,8 @@ const Todo = () => {
         ]
     })
 
-    const [newTaskTitle, setNewTaskTitle] = useState('')
+    // const [newTaskTitle, setNewTaskTitle] = useState('')
+    const newTaskInputRef = useRef(null)
     const [searchQuery, setSearchQuery] = useState('')
 
     const deleteAllTasks = () => {
@@ -48,6 +49,8 @@ const Todo = () => {
     }
 
     const addTask = () => {
+        const newTaskTitle = newTaskInputRef.current.value
+
         if (newTaskTitle.trim().length > 0) {
             const newTask = {
                 id: crypto?.randomUUID() ?? Date.now().toString(),
@@ -56,7 +59,9 @@ const Todo = () => {
             }
 
             setTasks([...tasks, newTask])
-            setNewTaskTitle('')
+            // setNewTaskTitle('')
+            // newTaskInputRef.current.value=''
+            newTaskInputRef.current.value=''
             setSearchQuery('')
         }
     }
@@ -75,8 +80,9 @@ const Todo = () => {
             <h1 className="todo__title">Список задач</h1>
             <AddTaskForm
                 addTask={addTask}
-                newTaskTitle={newTaskTitle}
-                setNewTaskTitle={setNewTaskTitle}
+                // newTaskTitle={newTaskTitle}
+                // setNewTaskTitle={setNewTaskTitle}
+                newTaskInputRef={newTaskInputRef}
             />
             <SearchTaskForm
                 searchQuery={searchQuery}
