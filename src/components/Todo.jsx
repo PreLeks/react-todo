@@ -3,6 +3,7 @@ import AddTaskForm from './AddTaskForm.jsx'
 import SearchTaskForm from './SearchTaskForm.jsx'
 import TodoInfo from './TodoInfo.jsx'
 import TodoList from './TodoList.jsx'
+import Button from './Button.jsx'
 
 const Todo = () => {
     const [tasks, setTasks] = useState(() => {
@@ -18,9 +19,12 @@ const Todo = () => {
         ]
     })
 
-    // const [newTaskTitle, setNewTaskTitle] = useState('')
-    const newTaskInputRef = useRef(null)
+    const [newTaskTitle, setNewTaskTitle] = useState('')
     const [searchQuery, setSearchQuery] = useState('')
+
+    const newTaskInputRef = useRef(null)
+    const firstIncompleteTaskRef = useRef(null)
+    const firstIncompleteTaskId = tasks.find(({isDone}) => !isDone)?.id
 
     const deleteAllTasks = () => {
         const isConfirmed = confirm('Точно удалить все задачи?!')
@@ -49,8 +53,6 @@ const Todo = () => {
     }
 
     const addTask = () => {
-        const newTaskTitle = newTaskInputRef.current.value
-
         if (newTaskTitle.trim().length > 0) {
             const newTask = {
                 id: crypto?.randomUUID() ?? Date.now().toString(),
@@ -59,16 +61,19 @@ const Todo = () => {
             }
 
             setTasks([...tasks, newTask])
-            // setNewTaskTitle('')
-            // newTaskInputRef.current.value=''
-            newTaskInputRef.current.value=''
+            setNewTaskTitle('')
             setSearchQuery('')
+            newTaskInputRef.current.focus()
         }
     }
 
     useEffect(() => {
         localStorage.setItem('tasks', JSON.stringify(tasks))
     }, [tasks])
+
+    useEffect(() => {
+        newTaskInputRef.current.focus()
+    }, [])
 
     const clearSearchQuery = searchQuery.trim().toLowerCase()
     const filteredTasks = clearSearchQuery.length > 0
@@ -80,8 +85,8 @@ const Todo = () => {
             <h1 className="todo__title">Список задач</h1>
             <AddTaskForm
                 addTask={addTask}
-                // newTaskTitle={newTaskTitle}
-                // setNewTaskTitle={setNewTaskTitle}
+                newTaskTitle={newTaskTitle}
+                setNewTaskTitle={setNewTaskTitle}
                 newTaskInputRef={newTaskInputRef}
             />
             <SearchTaskForm
@@ -93,9 +98,15 @@ const Todo = () => {
                 done={tasks.filter(({isDone}) => isDone).length}
                 onDeleteAllButtonClick={deleteAllTasks}
             />
+            <Button
+                children='К первой невыполненной задаче'
+                onClick={() => firstIncompleteTaskRef.current?.scrollIntoView({behavior: 'smooth'})}
+            />
             <TodoList
                 tasks={tasks}
                 filteredTasks={filteredTasks}
+                firstIncompleteTaskRef={firstIncompleteTaskRef}
+                firstIncompleteTaskId={firstIncompleteTaskId}
                 onDeleteTaskButtonClick={deleteTask}
                 onTaskCompleteChange={toggleTaskComplete}
             />

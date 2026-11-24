@@ -4,8 +4,8 @@ import Button from './Button.jsx'
 const AddTaskForm = (props) => {
     const {
         addTask,
-        // newTaskTitle,
-        // setNewTaskTitle,
+        newTaskTitle,
+        setNewTaskTitle,
         newTaskInputRef,
     } = props
 
@@ -16,20 +16,20 @@ const AddTaskForm = (props) => {
 
     return (
         <form
-            className = "todo__form"
-            onSubmit = {onSubmit}
+            className="todo__form"
+            onSubmit={onSubmit}
         >
             <Field
-                className = "todo__field"
-                id = "new-task"
-                label = "Новая задача"
-                // value = {newTaskTitle}
-                // onInput = {(e) => setNewTaskTitle(e.target.value)}
+                className="todo__field"
+                id="new-task"
+                label="Новая задача"
+                value={newTaskTitle}
+                onInput={(e) => setNewTaskTitle(e.target.value)}
                 ref={newTaskInputRef}
             />
             <Button
-                type = "submit"
-                children = "Ввод"
+                type="submit"
+                children="Ввод"
             />
         </form>
     )
